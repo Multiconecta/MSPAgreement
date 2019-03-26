@@ -27,6 +27,8 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 # ------------------------------------------------------------------------
 
+use File::Basename;
+use POSIX;
 
 do_dir("..");
 
@@ -66,6 +68,18 @@ sub do_file{
 
 	open(TMP_FILE,">/tmp/tmp_glpi.txt");
 
+	$filename = basename($_);
+	$timestamp = strftime('%Y-%m-%d %TZ', gmtime((stat($file))[9]));
+	$fileversion = '100';
+	$fileauthor = 'mcsi';
+	foreach (@lines){
+		if (m/\@version \$Id: /){
+			($fileversion, $fileauthor) =
+				(/\@version \$Id: .*? (.*?) .*? .*? (.*?) /);
+			last;
+		}
+	}
+
 	$status='';
 	foreach (@lines){
 		if ($_ =~ m/\*\//){
@@ -83,7 +97,11 @@ sub do_file{
 				open(HEADER_FILE,"HEADER");
 				@headers=<HEADER_FILE>;
 				foreach (@headers){
-					print TMP_FILE $_;
+					if ($_ =~ m/\@version \$Id/){
+						print TMP_FILE " * \@version \$Id: $filename $fileversion $timestamp $fileauthor \$\n";
+					}else{
+						print TMP_FILE $_;
+					}
 				}
 				close(HEADER_FILE) ;
 				
@@ -97,6 +115,3 @@ sub do_file{
 	
 
 }
-
-
-

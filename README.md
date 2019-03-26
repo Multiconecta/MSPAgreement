@@ -1,4 +1,4 @@
-# GLPi MSPAgreement Plugin
+# GLPi MSP Agreement Plugin
 
 ## Introduction
 

@@ -4,7 +4,7 @@
 ***************************Main dev team******************************
 
 
-- Julien Dombre (moyo at indepnet.org)
+- Helvio Pichamone Jr. (helvio at multiconecta.com.br)
 
 
 **********************************************************************

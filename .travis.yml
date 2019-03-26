@@ -6,21 +6,22 @@ php:
   - 7.2
   - nightly
 
-#env:
-#  global:
-#    - DB=mysql
-#  matrix:
-#    - GLPIVER=9.1/bugfixes
-#    - GLPIVER=master
+env:
+  global:
+    - DB=mysql
+  matrix:
+    - GLPIVER=9.3/bugfixes
+    - GLPIVER=9.4/bugfixes
+    - GLPIVER=master
 
 before_script:
   - composer self-update
-#  - git clone --depth=1 https://github.com/glpi-project/glpi -b $GLPIVER ../glpi && cd ../glpi
-#  - composer install --no-dev
-#  - mysql -u root -e 'create database glpitest;'
-#  - php tools/cliinstall.php --db=glpi-test --user=travis --tests
-#  - mv ../{LNAME} plugins/{LNAME}
-#  - cd plugins/{LNAME}
+  - git clone --depth=1 https://github.com/glpi-project/glpi -b $GLPIVER ../glpi && cd ../glpi
+  - composer install --no-dev
+  - mysql -u root -e 'create database glpitest;'
+  - php tools/cliinstall.php --db=glpi-test --user=travis --tests
+  - mv ../mspagreement plugins/mspagreement
+  - cd plugins/mspagreement
   - composer install -o
 
 
@@ -31,9 +32,11 @@ script:
 
 
 matrix:
-#  exclude:
-#    - php: 5.4
-#      env: GLPIVER=master
+  exclude:
+    - php: 5.6
+      env: GLPIVER=9.4/bugfixes
+    - php: 5.6
+      env: GLPIVER=master
   allow_failures:
     - php: nightly
 
